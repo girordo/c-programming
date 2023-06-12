@@ -15,9 +15,9 @@ int main()
   struct user usr;
 
   FILE *fp;
-  char filename[50];
+  char filename[40], phone[40], pword[40], cont;
 
-  int opt;
+  int opt, choice;
 
   printf("\nWhat do you want to do?");
   printf("\n\n1. Register an account");
@@ -38,7 +38,7 @@ int main()
     scanf("%s", usr.password);
     usr.balance = 0;
     strcpy(filename, usr.phone);
-    fp = fopen(strcat(filename, "dat"), "w");
+    fp = fopen(strcat(filename, ".dat"), "w");
     fwrite(&usr, sizeof(struct user), 1, fp);
 
     if (fwrite != 0)
@@ -50,13 +50,50 @@ int main()
       printf("\n\nSomething went wrong please try again");
     }
 
+    fclose(fp);
+
   case 2:
     system("clear");
-    printf("Enter your account number:");
-    scanf("%s", usr.ac);
+    printf("Enter your phone number:");
+    scanf("%s", phone);
+    printf("Password:\t");
+    scanf("%s", pword);
+    strcpy(filename, phone);
 
+    fp = fopen(strcat(filename, ".dat"), "r");
+    fread(&usr, sizeof(struct user), 1, fp);
+    fclose(fp);
+
+    if (!strcmp(pword, usr.password))
+    {
+      while (cont == "y")
+      {
+        system("clear");
+        printf("\nPress 1 for balance inquiry");
+        printf("\nPress 2 for depositing cash");
+        printf("\nPress 3 for cash withdraw");
+        printf("\nPress 4 for online transfer");
+        printf("\nPress 5 for password change");
+
+        printf("\n\nYour choice:");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+        case 1:
+          printf("\nYour current balance is %.2f:", usr.balance);
+        }
+
+        printf("\n Do you want to continue the transaction [y/n]");
+        scanf("%s", &cont);
+      }
+    }
+    else
+    {
+      printf("\nInvalid password");
+    }
   default:
-    printf("You have to select one of the options");
+    printf("\nYou have to select one of the options");
   }
 
   return 0;
